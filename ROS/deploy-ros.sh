@@ -10,7 +10,7 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-CONTAINER=debian
+CONTAINER=ros
 ROOT="/var/lib/machines/$CONTAINER"
 
 echo ============================================================
