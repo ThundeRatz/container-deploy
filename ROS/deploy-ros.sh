@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Useful links:
 # https://wiki.archlinux.org/index.php/Systemd-networkd#Usage_with_containers
 # https://wiki.archlinux.org/index.php/Systemd-nspawn
@@ -22,18 +22,23 @@ debootstrap --include dbus,lsb-release jessie "$ROOT" http://httpredir.debian.or
 echo ============================================================
 echo "Setting up networking (will also enable forwarding on the host system)"
 echo 1 > /proc/sys/net/ipv4/ip_forward
+echo -e "127.0.0.1\t$(hostname)" >> "$ROOT/etc/hosts"
 echo nameserver 8.8.8.8 > "$ROOT/usr/lib/systemd/resolv.conf"
+sudo ln -sf /usr/lib/systemd/resolv.conf "$ROOT/etc/resolv.conf"
 sudo ln -sf /etc/systemd/system/multi-user.target.wants/systemd-networkd.service "$ROOT/lib/systemd/system/systemd-networkd.service"
 
+shell() {
+    machinectl shell "$CONTAINER" "$@"
+}
 echo ============================================================
 echo Starting container and updating keyring
-systemctl start systemd-nspawn@debian.service
-systemd-run -M debian /usr/bin/apt-key update
+systemctl start "systemd-nspawn@$CONTAINER.service"
+shell /usr/bin/apt-key update
 
 echo ============================================================
 echo Running ROS install script
 cp ros-install.sh $ROOT/
-systemd-run -M debian /ros-install.sh
+shell /ros-install.sh
 rm $ROOT/ros-install.sh
 
 echo ============================================================
