@@ -17,11 +17,15 @@ echo ============================================================
 echo Creating container with debootstrap
 # dbus - required for connecting additional shells to the container
 # lsb-release - commonly found on debian and some programs assume it exists
-debootstrap --include dbus,lsb-release jessie "$ROOT" http://httpredir.debian.org/debian/
+# sudo - run commands as superuser
+debootstrap --include dbus,lsb-release,sudo jessie "$ROOT" http://httpredir.debian.org/debian/
 
 echo ============================================================
 echo "Setting up networking (will also enable forwarding on the host system)"
+# Host config
 echo 1 > /proc/sys/net/ipv4/ip_forward
+systemctl start systemd-networkd
+# Container config
 echo -e "127.0.0.1\t$(hostname)" >> "$ROOT/etc/hosts"
 echo nameserver 8.8.8.8 > "$ROOT/usr/lib/systemd/resolv.conf"
 sudo ln -sf /usr/lib/systemd/resolv.conf "$ROOT/etc/resolv.conf"
@@ -41,7 +45,7 @@ cp ros-install.sh $ROOT/
 shell /ros-install.sh
 
 echo ============================================================
-echo Check service status for completion
+echo Done!
 echo If you need help, the man pages for systemd-nspawn, machinectl and networkctl
 echo are good resources.
 echo To boot this container with networking and sharing X files:
