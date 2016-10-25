@@ -31,10 +31,6 @@ echo nameserver 8.8.8.8 > "$ROOT/usr/lib/systemd/resolv.conf"
 sudo ln -sf /usr/lib/systemd/resolv.conf "$ROOT/etc/resolv.conf"
 sudo ln -sf /etc/systemd/system/multi-user.target.wants/systemd-networkd.service "$ROOT/lib/systemd/system/systemd-networkd.service"
 
-echo ============================================================
-echo Starting container
-systemctl start "systemd-nspawn@$CONTAINER.service"
-
 shell() {
     # machinectl shell "$CONTAINER" "$@" would be better (can execute on a running container)
     systemd-nspawn -M "$CONTAINER" "$@"
