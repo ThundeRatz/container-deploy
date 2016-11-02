@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y git gfortran \
 RUN git clone --depth=5 https://github.com/NVIDIA/caffe.git ~/caffe
 RUN pip install -U pip && pip install -r ~/caffe/python/requirements.txt && rm -rf ~/.cache/pip
 RUN mkdir -p ~/caffe/build && cd ~/caffe/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local .. \
-    && make -j4 all && make install && rm -rf ~/caffe
+    && make -j4 all && make install && ln -s libcaffe-nv.so /usr/local/lib/libcaffe.so && rm -rf ~/caffe
 
 
 # RTIMULib2
