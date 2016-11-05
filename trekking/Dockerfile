@@ -7,8 +7,8 @@ RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 RUN apt-get update && apt-get install --no-install-recommends -y build-essential sudo \
     && rm -rf /var/lib/apt/lists/*
-RUN useradd -mG sudo ros && mkdir -p /etc/sudoers.d \
-    && echo '%sudo   ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo_nopasswd
+RUN useradd -mG sudo ros && echo source "/opt/ros/$ROS_DISTRO/setup.bash" >> ~ros/.bashrc \
+    && mkdir -p /etc/sudoers.d && echo '%sudo   ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo_nopasswd
 
 
 # ROS
