@@ -9,6 +9,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y build-essential
     && rm -rf /var/lib/apt/lists/*
 RUN useradd -mG sudo ros && echo source "/opt/ros/$ROS_DISTRO/setup.bash" >> ~ros/.bashrc \
     && mkdir -p /etc/sudoers.d && echo '%sudo   ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo_nopasswd
+# Configure PATH and dynamic linker with NVIDIA and CUDA for all users
+# (NVIDIA provides /etc/ld.so.conf.d files, but linker config is not updated by default)
+RUN sed -i 's|PATH="|&/usr/local/nvidia/bin:/usr/local/cuda/bin:|' /etc/environment && ldconfig
 
 
 # ROS
@@ -49,8 +52,8 @@ RUN mkdir ~/RTIMULib2/Linux/build && cd ~/RTIMULib2/Linux/build && cmake -DBUILD
     && make -j4 && sudo make install && rm -rf ~/RTIMULib2
 
 
-# Other packages: gpsd
-RUN apt-get update && apt-get install --no-install-recommends -y gpsd libgps-dev \
+# Other packages: gpsd, v4l-utils (for v4l2-ctl)
+RUN apt-get update && apt-get install --no-install-recommends -y gpsd libgps-dev v4l-utils \
     && rm -rf /var/lib/apt/lists/*
 
 
