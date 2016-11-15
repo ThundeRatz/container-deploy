@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/docker"
 docker build -t thunderatz/trekking .
-echo 'To start a shell in the container and allow USB access, run:'
-echo 'nvidia-docker run --rm -v <path to Trekking directory>:/home/ros/ThunderTrekking --privileged -v /dev/bus/usb:/dev/bus/usb -ti thunderatz/trekking bash'
+echo 'To start the container, run:'
+echo 'nvidia-docker run --rm --privileged -v <path to Trekking directory>:/home/ros/ThunderTrekking -v /dev/bus/usb -v /tmp/.X11-unix:/tmp/.X11-unix:ro thunderatz/trekking'
