@@ -62,6 +62,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y gpsd libgps-dev
     && rm -rf /var/lib/apt/lists/*
 
 
+COPY ./run.sh /home/ros/
 COPY ./ros_entrypoint.sh /
 ENTRYPOINT ["/ros_entrypoint.sh"]
-CMD ["bash"]
+CMD ["/home/ros/run.sh"]
