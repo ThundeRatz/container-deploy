@@ -36,13 +36,19 @@ RUN cd ~/opencv && mkdir build && cd build && cmake -DBUILD_DOCS=OFF -DBUILD_PER
     -DCUDA_ARCH_PTX="3.0" -DCUDA_FAST_MATH=ON -DENABLE_FAST_MATH=ON -DENABLE_SSE41=ON \
     -DENABLE_SSE42=ON -DENABLE_SSSE3=ON -DWITH_CUBLAS=ON -DWITH_MATLAB=OFF .. \
     && make -j4 && make install && rm -rf ~/opencv*
+# NVIDIA CUB
+RUN git clone --depth=5 https://github.com/NVlabs/cub.git ~/cub && cd ~/cub \
+    && git checkout 1.5.5 && cp -r cub /usr/local/include/cub
 
 
 # Caffe
-RUN git clone --depth=5 https://github.com/NVIDIA/caffe.git ~/caffe
+RUN git clone --depth=5 https://github.com/lunzueta/caffe ~/caffe && cd ~/caffe \
+    && git reset --hard abed522996d309e948e3f142454885d333704358
 RUN pip install -U pip && pip install -r ~/caffe/python/requirements.txt && rm -rf ~/.cache/pip
-RUN mkdir -p ~/caffe/build && cd ~/caffe/build && cmake -DCMAKE_INSTALL_PREFIX=/usr/local .. \
-    && make -j4 all && make install && ln -s libcaffe-nv.so /usr/local/lib/libcaffe.so && rm -rf ~/caffe
+RUN mkdir -p ~/caffe/build && cd ~/caffe/build && cmake -DBUILD_docs=OFF -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr/local -DOpenCV_DIR=/usr/local/share/OpenCV .. \
+    && make -j4 all && make install && rm -rf ~/caffe
+RUN echo export PYTHONPATH=/usr/local/python > /etc/profile.d/python-usr-local.sh
 
 
 # RTIMULib2
