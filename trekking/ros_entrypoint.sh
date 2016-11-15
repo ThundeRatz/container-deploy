@@ -1,4 +1,10 @@
 #!/bin/bash
 set -e
 
-su - ros
+ldconfig
+
+if [[ "$*" ]] ; then
+    su - ros -c "$*"
+else
+    su - ros
+fi

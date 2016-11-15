@@ -7,11 +7,8 @@ RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 RUN apt-get update && apt-get install --no-install-recommends -y build-essential sudo \
     && rm -rf /var/lib/apt/lists/*
-RUN useradd -mG sudo ros && echo source "/opt/ros/$ROS_DISTRO/setup.bash" >> ~ros/.bashrc \
-    && mkdir -p /etc/sudoers.d && echo '%sudo   ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo_nopasswd
-# Configure PATH and dynamic linker with NVIDIA and CUDA for all users
-# (NVIDIA provides /etc/ld.so.conf.d files, but linker config is not updated by default)
-RUN sed -i 's|PATH="|&/usr/local/nvidia/bin:/usr/local/cuda/bin:|' /etc/environment && ldconfig
+# Configure PATH for all users
+RUN echo PATH="/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH" > /etc/profile.d/nvidia-path.sh
 
 
 # ROS
@@ -20,6 +17,8 @@ RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 421C365BD9FF1
 ENV ROS_DISTRO kinetic
 RUN apt-get update && apt-get install --no-install-recommends -y cmake ros-kinetic-desktop-full python-wstool \
     && rm -rf /var/lib/apt/lists/*
+RUN useradd -mG sudo ros && echo source "/opt/ros/$ROS_DISTRO/setup.bash" >> ~ros/.bashrc \
+    && mkdir -p /etc/sudoers.d && echo '%sudo   ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo_nopasswd
 
 
 # Caffe deps
