@@ -22,6 +22,7 @@ fi
 
 if [ ! -d workspace ] ; then
     echo 'ROS workspace not found, creating now'
+    source /opt/ros/kinetic/setup.bash
     ./scripts/create_catkin_workspace.sh
 fi
 
