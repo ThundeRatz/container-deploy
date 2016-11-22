@@ -42,8 +42,7 @@ RUN git clone --depth=5 https://github.com/NVlabs/cub.git ~/cub && cd ~/cub \
 
 
 # Caffe
-RUN git clone --depth=5 https://github.com/lunzueta/caffe ~/caffe && cd ~/caffe \
-    && git reset --hard abed522996d309e948e3f142454885d333704358
+RUN git clone --depth=5 https://github.com/ThundeRatz/caffe ~/caffe && cd ~/caffe
 RUN pip install -U pip && pip install -r ~/caffe/python/requirements.txt && rm -rf ~/.cache/pip
 RUN mkdir -p ~/caffe/build && cd ~/caffe/build && cmake -DBUILD_docs=OFF -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr/local -DOpenCV_DIR=/usr/local/share/OpenCV .. \
