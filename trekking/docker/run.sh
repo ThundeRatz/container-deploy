@@ -27,7 +27,7 @@ fi
 
 cd workspace
 source devel/setup.bash
-catkin_make
+catkin_make -DCMAKE_BUILD_TYPE=Release
 
 sudo chown ros:ros /dev/video0
 roslaunch thunder_trekking trekking.launch
