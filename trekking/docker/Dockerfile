@@ -38,7 +38,8 @@ RUN cd ~/opencv && mkdir build && cd build && cmake -DBUILD_DOCS=OFF -DBUILD_PER
     && make -j4 && make install && rm -rf ~/opencv*
 # NVIDIA CUB
 RUN git clone --depth=5 https://github.com/NVlabs/cub.git ~/cub && cd ~/cub \
-    && git checkout 1.5.5 && cp -r cub /usr/local/include/cub
+    && git reset --hard aeb2d43bf4c75a52874f9d73160fb762282417d6 \
+    && cp -r cub /usr/local/include/cub && rm -rf ~/cub
 
 
 # Caffe
