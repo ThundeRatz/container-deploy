@@ -22,4 +22,9 @@ else
     DOCKER=docker
 fi
 
-$DOCKER run --rm --privileged -v "$trekking":/home/ros/ThunderTrekking -v /dev/bus/usb -v /tmp/.X11-unix:/tmp/.X11-unix:ro thunderatz/trekking
+CMD="$DOCKER run --rm --privileged -e DISPLAY=\"$DISPLAY\" -v \"$trekking\":/home/ros/ThunderTrekking -v /dev/bus/usb -v /tmp/.X11-unix:/tmp/.X11-unix:ro"
+if (( $# == 0 )) ; then
+    eval "$CMD thunderatz/trekking"
+else
+    eval "$CMD -ti thunderatz/trekking \"$*\""
+fi
