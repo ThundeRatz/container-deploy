@@ -28,6 +28,7 @@ fi
 
 cd workspace
 source devel/setup.bash
+catkin_make roslint_thunder_trekking
 catkin_make -DCMAKE_BUILD_TYPE=Release
 
 sudo chown ros:ros /dev/video0
