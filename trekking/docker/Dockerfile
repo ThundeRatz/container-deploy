@@ -3,10 +3,10 @@ MAINTAINER Tiago Koji Castro Shibata
 
 
 # General setup
+RUN apt-get update && apt-get install --no-install-recommends -y build-essential locales sudo \
+    && rm -rf /var/lib/apt/lists/*
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
-RUN apt-get update && apt-get install --no-install-recommends -y build-essential sudo \
-    && rm -rf /var/lib/apt/lists/*
 # Configure PATH for all users
 RUN echo PATH="/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH" > /etc/profile.d/nvidia-path.sh
 
