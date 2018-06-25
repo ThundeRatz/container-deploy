@@ -1,5 +1,5 @@
-FROM nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
-MAINTAINER Tiago Koji Castro Shibata
+FROM nvidia/cuda:9.1-cudnn7-devel-ubuntu16.04
+LABEL maintainer="Tiago Koji Castro Shibata"
 
 
 # General setup
