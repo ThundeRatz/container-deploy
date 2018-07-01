@@ -23,7 +23,7 @@ RUN useradd -mG sudo ros && echo source "/opt/ros/$ROS_DISTRO/setup.bash" >> ~ro
 
 
 # RTIMULib2
-RUN git clone --depth=5 https://github.com/richardstechnotes/RTIMULib2.git ~/RTIMULib2
+RUN git clone --depth=5 https://github.com/Nick-Currawong/RTIMULib2.git ~/RTIMULib2
 RUN mkdir ~/RTIMULib2/Linux/build && cd ~/RTIMULib2/Linux/build && cmake -DBUILD_GL=OFF .. \
     && make -j4 && sudo make install && rm -rf ~/RTIMULib2
 
