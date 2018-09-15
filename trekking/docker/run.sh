@@ -16,17 +16,17 @@ elif ! nvidia-smi > /dev/null ; then
     echo 'Failed to run nvidia-smi, check if host libraries are in place'
 fi
 
-if ! cd ~/ThunderTrekking/Main ; then
+if ! cd ~/ThunderTrekking ; then
     fail "$HOME/ThunderTrekking not found, add it as a volume when running nvidia-docker"
 fi
 
-if [ ! -d workspace ] ; then
+if [ ! -d ~/trekking_ws ] ; then
     echo 'ROS workspace not found, creating now'
     source /opt/ros/kinetic/setup.bash
     ./scripts/create_catkin_workspace.sh
 fi
 
-cd workspace
+cd ~/trekking_ws
 source devel/setup.bash
 catkin_make roslint_thunder_trekking
 catkin_make -DCMAKE_BUILD_TYPE=Release
